@@ -13,6 +13,7 @@ app.use(cors());
 // Connect to MongoDB
 connectDB();
 
+<<<<<<< HEAD
 // routes to add movies
 
 // GET all movies
@@ -42,6 +43,30 @@ app.post('/movies', async (req, res) => {
 
 // PUT update a movie
 app.put('/movies/:id', async (req, res) => {
+=======
+app.get('/', (req, res) => {
+  res.json(movies);
+});
+
+app.post('/', (req, res) => {
+  const movie = { ...req.body, id: Date.now().toString() };
+  movies.push(movie);
+  res.status(201).json(movie);
+});
+
+app.put('//:id', (req, res) => {
+  const { id } = req.params;
+  const movieIndex = movies.findIndex((movie) => movie.id === id);
+  if (movieIndex !== -1) {
+    movies[movieIndex] = { ...movies[movieIndex], ...req.body };
+    res.json(movies[movieIndex]);
+  } else {
+    res.status(404).send('Movie not found');
+  }
+});
+
+app.delete('/:id', (req, res) => {
+>>>>>>> 001c96b86bdbceb5da27a1c20664f87cb231de7a
   const { id } = req.params;
 
   try {

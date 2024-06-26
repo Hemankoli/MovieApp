@@ -10,8 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// Connect to MongoDB
-connectDB();
+connectDB(); // Connect to MongoDB
 
 // routes to add movies
 
@@ -24,7 +23,6 @@ app.get('/movies', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
 
 // POST a new movie
 app.post('/movies', async (req, res) => {
@@ -39,8 +37,7 @@ app.post('/movies', async (req, res) => {
   }
 });
 
-
-// PUT update a movie
+// PUT update a movie watched/unwatched
 app.put('/movies/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -56,12 +53,15 @@ app.put('/movies/:id', async (req, res) => {
 });
 
 
-// DELETE a movie
+// DELETE a movie by ID
 app.delete('/movies/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    await Movie.findByIdAndDelete(id);
+    const deletedMovie = await Movie.findByIdAndDelete(id);
+    if (!deletedMovie) {
+      return res.status(404).send('Movie not found');
+    }
     res.status(204).send();
   } catch (err) {
     res.status(400).json({ message: err.message });

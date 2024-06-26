@@ -8,6 +8,9 @@ const MovieList = () => {
     const fetchMovies = async () => {
       try {
         const response = await fetch('http://localhost:5000/movies');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         if (Array.isArray(data)) {
           setMovies(data);
@@ -24,6 +27,7 @@ const MovieList = () => {
     fetchMovies();
   }, []);
 
+  
   const handleToggleWatched = async (movie) => {
     try {
       const response = await fetch(`http://localhost:5000/movies/${movie._id}`, {

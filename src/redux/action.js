@@ -34,6 +34,7 @@ export const addMovie = (movie) => async (dispatch) => {
 };
 
 export const editMovie = (id, updates) => async (dispatch) => {
+  console.log('editMovie - id:', id);
   try {
     const response = await axios.put(`http://localhost:5000/movies/${id}`, updates);
     dispatch({ type: 'EDIT_MOVIE', payload: response.data });
@@ -43,6 +44,8 @@ export const editMovie = (id, updates) => async (dispatch) => {
 };
 
 export const deleteMovie = (id) => async (dispatch) => {
+  console.log('deleteMovie - id:', id);
+
   try {
     await axios.delete(`http://localhost:5000/movies/${id}`);
     dispatch({ type: 'DELETE_MOVIE', payload: id });

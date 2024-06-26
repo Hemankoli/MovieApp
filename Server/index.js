@@ -2,19 +2,31 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require("mongoose")
-const connectDB = require('./model/db');
-const Movie = require("./model/Movie")
-
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-connectDB(); // Connect to MongoDB
+// MongoDB connection
+const uri = 'mongodb+srv://hemankoli1409:6EYj5DcBjMRbNKN6@movies.zf8n4e2.mongodb.net/Movies?retryWrites=true&w=majority&appName=Movies'; 
+mongoose.connect(uri)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('Failed to connect to MongoDB', err));
 
-// routes to add movies
+// Define a movie schema and model
+const movieSchema = new mongoose.Schema({ 
+  title: { type: String, required: true },
+  description: { type: String},
+  releaseYear: { type: Number, required: true },
+  genre: String,
+  rating: Number,
+  watched: { type: Boolean, default: false }
+});
 
-// GET all movies
+const Movie = mongoose.model('Movie', movieSchema);
+
+// Route to get all movies
+
 app.get('/movies', async (req, res) => {
   try {
     const movies = await Movie.find();
@@ -24,10 +36,11 @@ app.get('/movies', async (req, res) => {
   }
 });
 
-// POST a new movie
+// Route to add a new movie
+
 app.post('/movies', async (req, res) => {
-  const { title, year, description, genre, rating } = req.body;
-  const movie = new Movie({ title, year, description, genre, rating });
+  const { title, releaseYear, description, genre, rating } = req.body;
+  const movie = new Movie({ title, releaseYear, description, genre, rating });
 
   try {
     const newMovie = await movie.save();
@@ -37,35 +50,35 @@ app.post('/movies', async (req, res) => {
   }
 });
 
-// PUT update a movie watched/unwatched
+// Route to update a movie
 app.put('/movies/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true });
+    const updatedMovie = await Movie.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+    
     if (!updatedMovie) {
       return res.status(404).send('Movie not found');
     }
+    
     res.json(updatedMovie);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.log('Updated movie:', updatedMovie);
+  } catch (error) {
+    console.error('Error updating movie:', error);
+    res.status(500).send('Internal server error');
   }
 });
 
 
-// DELETE a movie by ID
-app.delete('/movies/:id', async (req, res) => {
-  const { id } = req.params;
+// Route to delete a movie
 
-  try {
-    const deletedMovie = await Movie.findByIdAndDelete(id);
-    if (!deletedMovie) {
-      return res.status(404).send('Movie not found');
-    }
-    res.status(204).send();
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+app.delete('/movies/:id', async (req, res) => {   
+  const { id } = req.params;
+  const deletedMovie = await Movie.findByIdAndDelete(id);
+  if (!deletedMovie) {
+    return res.status(404).send('Movie not found');
   }
+  res.status(204).send();
 });
 
 app.listen(5000, () => {

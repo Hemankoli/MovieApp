@@ -8,17 +8,17 @@ app.use(cors());
 
 let movies = [];
 
-app.get('/movies', (req, res) => {
+app.get('/', (req, res) => {
   res.json(movies);
 });
 
-app.post('/movies', (req, res) => {
+app.post('/', (req, res) => {
   const movie = { ...req.body, id: Date.now().toString() };
   movies.push(movie);
   res.status(201).json(movie);
 });
 
-app.put('/movies/:id', (req, res) => {
+app.put('//:id', (req, res) => {
   const { id } = req.params;
   const movieIndex = movies.findIndex((movie) => movie.id === id);
   if (movieIndex !== -1) {
@@ -29,7 +29,7 @@ app.put('/movies/:id', (req, res) => {
   }
 });
 
-app.delete('/movies/:id', (req, res) => {
+app.delete('/:id', (req, res) => {
   const { id } = req.params;
   movies = movies.filter((movie) => movie.id !== id);
   res.status(204).send();

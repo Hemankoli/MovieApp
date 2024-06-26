@@ -32,7 +32,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/add"
+              to="/movies_add"
               className="text-white text-lg border-purple-400 font-semibold p-2 rounded-md bg-purple-400 hover:bg-red-400 block md:inline-block"
               onClick={() => setIsMenuOpen(false)}
             >

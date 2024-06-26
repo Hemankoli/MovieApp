@@ -15,7 +15,7 @@ const App = () => {
           <div className="container mx-auto">
             <Routes>
               <Route path="/" element={<MovieList />} />
-              <Route path="/add" element={<AddMovie />} />
+              <Route path="/movies_add" element={<AddMovie />} />
             </Routes>
           </div>
         </div>

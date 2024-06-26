@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMovie } from '../redux/action';
+import { useNavigate } from 'react-router-dom';
+
 
 const AddMovie = () => {
   const [title, setTitle] = useState('');
@@ -9,6 +11,8 @@ const AddMovie = () => {
   const [genre, setGenre] = useState('');
   const [rating, setRating] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,6 +22,7 @@ const AddMovie = () => {
     setReleaseYear('');
     setGenre('');
     setRating('');
+    navigate('/');
   };
 
   return (

@@ -8,10 +8,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB connection
-const uri = 'mongodb+srv://hemankoli1409:6EYj5DcBjMRbNKN6@movies.zf8n4e2.mongodb.net/Movies?retryWrites=true&w=majority&appName=Movies'; 
-mongoose.connect(uri)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('Failed to connect to MongoDB', err));
+mongoose.connect('mongodb://localhost:27017/moviesdb')
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error(err));
+
 
 // Define a movie schema and model
 const movieSchema = new mongoose.Schema({ 

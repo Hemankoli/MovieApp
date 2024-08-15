@@ -7,7 +7,7 @@ const MovieList = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await fetch('http://localhost:5000/');
+        const response = await fetch('http://localhost:5000/movies');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -30,7 +30,7 @@ const MovieList = () => {
   
   const handleToggleWatched = async (movie) => {
     try {
-      const response = await fetch(`http://localhost:5000/${movie._id}`, {
+      const response = await fetch(`http://localhost:5000/movies/${movie._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ const MovieList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:5000/${id}`, {
+      await fetch(`http://localhost:5000/movies/${id}`, {
         method: 'DELETE'
       });
 

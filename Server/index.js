@@ -27,9 +27,9 @@ const Movie = mongoose.model('Movie', movieSchema);
 
 // Route to get all movies
 
-app.get('/movies', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
-    const movies = await Movie.find();
+    const  = await Movie.find();
     res.json(movies);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -38,7 +38,7 @@ app.get('/movies', async (req, res) => {
 
 // Route to add a new movie
 
-app.post('/movies', async (req, res) => {
+app.post('/', async (req, res) => {
   const { title, releaseYear, description, genre, rating } = req.body;
   const movie = new Movie({ title, releaseYear, description, genre, rating });
 
@@ -51,7 +51,7 @@ app.post('/movies', async (req, res) => {
 });
 
 // Route to update a movie
-app.put('/movies/:id', async (req, res) => {
+app.put('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -72,7 +72,7 @@ app.put('/movies/:id', async (req, res) => {
 
 // Route to delete a movie
 
-app.delete('/movies/:id', async (req, res) => {   
+app.delete('/:id', async (req, res) => {   
   const { id } = req.params;
   const deletedMovie = await Movie.findByIdAndDelete(id);
   if (!deletedMovie) {
